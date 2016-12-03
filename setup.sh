@@ -35,7 +35,7 @@ case $ANSWER in
     brew install python
     brew install ansible
     rehash;;
-  * ) echo "install homebrew skip";;
+  * ) echo "install ansible skip";;
 esac
 
 echo 'run ansible?[Y/n]'
@@ -44,7 +44,7 @@ case $ANSWER in
   "" | "Y" | "y" )
     cd ~/dotfile
     HOMEBREW_CASK_OPTS="--appdir=/Applications" ansible-playbook -i hosts -vv localhost.yml;;
-  * ) echo "install homebrew skip";;
+  * ) echo "run ansible skip";;
 esac
 
 echo 'setup dotfiles?[Y/n]'
@@ -58,7 +58,7 @@ case $ANSWER in
     cp ~/dotfile/.vimrc ~/config/vim/.zimrc
     echo 'create .zshrc symbolic link'
     ln -s ~/config/zsh/.zshrc ~/.zshrc;;
-  * ) echo "install homebrew skip";;
+  * ) echo "setup dotfiles skip";;
 esac
 
 echo 'new Mac setup finished!! Please run chsh /bin/zsh'
