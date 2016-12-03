@@ -1,0 +1,99 @@
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  sudo: no
+  vars:
+    homebrew_taps:
+      - homebrew/binary
+      - homebrew/dupes
+      - caskroom/cask
+    homebrew_packages:
+      - { name: readline }
+      - { name: openssl }
+      - { name: openssl, state: linked, install_options: force }
+      - { name: python }
+      - { name: ansible }
+      - { name: coreutils }
+      - { name: git }
+      - { name: zsh, install_options: disable-etcdir }
+      - { name: wget }
+      - { name: curl }
+      - { name: cmake }
+      - { name: autoconf }
+      - { name: automake }
+      - { name: pkg-config }
+      - { name: ctags }
+      - { name: tree }
+      - { name: lv }
+      - { name: nkf }
+      - { name: jq }
+      - { name: rbenv }
+      - { name: ruby-build }
+      - { name: mysql }
+      - { name: sqlite }
+      - { name: redis }
+      - { name: imagemagick }
+      - { name: w3m }
+      - { name: source-highlight }
+      - { name: pwgen}
+      - { name: terminal-notifier}
+      - { name: watch}
+      - { name: htop-osx }
+      - { name: jpeg }
+    homebrew_cask_packages:
+      - { name: firefox }
+      - { name: java }
+      - { name: skype }
+      - { name: slack }
+      - { name: lighttable }
+      - { name: vagrant }
+      - { name: virtualbox }
+
+  tasks:
+    - name: add homebrew tap repository
+      homebrew_tap: tap={{ item }} state=present
+      with_items: homebrew_taps
+
+    - name: update homebrew
+      homebrew: update_homebrew=yes
+
+    # homebrew
+    - name: install homebrew package
+      homebrew: >
+        name={{ item.name }}
+        state={{ item.state | default('latest') }}
+        install_options={{
+          item.install_options | default() | join(',')
+          if item.install_options is not string
+          else item.install_options
+        }}
+      with_items: homebrew_packages
+      register: brew_result
+    - name: create homebrew package-info directory
+      file: path=~/config/homebrew state=directory
+    - name: store homebrew packge-info
+      shell: brew info {{ item }} > ~/config/homebrew/{{ item }}
+      with_items: brew_result.results | selectattr('changed') | map(attribute='item') | map(attribute='name') | list
+
+    # homebrew-cask
+    - name: install homebrew-cask
+      homebrew: name=brew-cask state=latest
+    - name: install homebrew-cask package
+      homebrew_cask: name={{ item.name }} state={{ item.state|default('installed') }}
+      with_items: homebrew_cask_packages
+      register: brew_result
+    - name: create homebrew-cask package-info directory
+      file: path=~/config/homebrew-cask state=directory
+    - name: store homebrew-cask packge-info
+      shell: brew info {{ item }} > ~/config/homebrew-cask/{{ item }}
+      with_items: brew_result.results | selectattr('changed') | map(attribute='item') | map(attribute='name') | list
+
+    # prezto
+    - name: install prezto
+      git: git@github.com:sorin-ionescu/prezto.git
+      args:
+        creates: ~/.zprezto/
+
+  handlers:
+    - name: run fc-cache
+      shell: fc-cache -vf

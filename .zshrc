@@ -1,15 +1,18 @@
 export LANG=ja_JP.UTF-8
-HISTFILE=$HOME/.zsh-history
+HISTFILE=$HOME/config/zsh/.zsh-history
 HISTSIZE=100000
 SAVEHIST=100000
 
-export CATALINA_HOME=/Users/reg/apache-tomcat-5.5.33
-export PATH=~/homebrew/bin:$PATH
-export PATH=/opt/local/lib/postgresql84/bin:/Users/reg/apache-maven-2.0.9/bin:/opt/local/bin:/opt/local/sbin/:$CATALINA_HOME/bin:$PATH
+source ~/.nvm/nvm.sh
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
-export M2_HOME=/Users/reg/apache-maven-2.0.9
-export MANPATH=/opt/local/man:$MANPATH
-export PGDATA=/opt/local/var/db/postgresql83/defaultdb
+setopt EXTENDED_GLOB
+for rcfile in "${ZDOTDIR:-$HOME}"/.zprezto/runcoms/^README.md(.N); do
+      ln -s "$rcfile" "${ZDOTDIR:-$HOME}/.${rcfile:t}"
+done
+
+export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+export MANPATH=/usr/local/man:$MANPATH
 export GIT_PAGER="lv -c"
 
 ## 補完機能の強化
@@ -22,7 +25,7 @@ colors
 
 case ${UID} in
 0)
-  PROMPT="[%{${fg[blue]}%}%n@%m%{${reset_color}%}] %{${fg[blue]}%}$%{${reset_color}%} "
+  PROMPT="[%{${fg[blue]}%}%n@office_mac%{${reset_color}%}] %{${fg[blue]}%}$%{${reset_color}%} "
   PROMPT2="%B%{${fg[blue]}%}%_#%{${reset_color}%}%b "
   SPROMPT="%B%{${fg[blue]}%}%r is correct? [n,y,a,e]:%{${reset_color}%}%b "
   RPROMPT="%{${fg[blue]}%}[%/]%{${reset_color}%}"
@@ -131,13 +134,18 @@ linux*)
 alias ls="ls --color"
 ;;
 esac
+
 alias la="ls -a"
 alias lf="ls -F"
 alias ll="ls -la"
 alias du="du -h"
 alias df="df -h"
 
-alias emacs="open /Applications/Emacs.app"
+alias nicobook-production="~/nicobook-production.sh"
+alias alert='terminal-notifier -message $1'
+alias python='python3'
+alias vim='vim -u ~/dotfiles/vim/.vimrc'
+
 
 ## 最後のスラッシュを自動的に削除しない
 setopt noautoremoveslash
