@@ -51,12 +51,12 @@ read ANSWER
 case $ANSWER in
   "" | "Y" | "y" )
     echo 'copy dotfiles ~/dotfile -> ~/config'
-    mkdir ~/config/zsh
-    mkdir ~/config/vim
+    mkdir -p ~/config/zsh
+    mkdir -p ~/config/vim
     cp ~/dotfile/.zshrc ~/config/zsh/.zshrc
     cp ~/dotfile/.vimrc ~/config/vim/.zimrc
     echo 'create .zshrc symbolic link'
-    ln -s ~/config/zsh/.zshrc ~/.zshrc;;
+    ln -s ~/.zshrc ~/config/zsh/.zshrc;;
   * ) echo "setup dotfiles skip";;
 esac
 
