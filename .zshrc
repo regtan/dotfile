@@ -3,7 +3,6 @@ HISTFILE=$HOME/config/zsh/.zsh-history
 HISTSIZE=100000
 SAVEHIST=100000
 
-source ~/.nvm/nvm.sh
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
 setopt EXTENDED_GLOB
@@ -25,7 +24,7 @@ colors
 
 case ${UID} in
 0)
-  PROMPT="[%{${fg[blue]}%}%n@office_mac%{${reset_color}%}] %{${fg[blue]}%}$%{${reset_color}%} "
+  PROMPT="[%{${fg[blue]}%}%n@%m%{${reset_color}%}] %{${fg[blue]}%}$%{${reset_color}%} "
   PROMPT2="%B%{${fg[blue]}%}%_#%{${reset_color}%}%b "
   SPROMPT="%B%{${fg[blue]}%}%r is correct? [n,y,a,e]:%{${reset_color}%}%b "
   RPROMPT="%{${fg[blue]}%}[%/]%{${reset_color}%}"

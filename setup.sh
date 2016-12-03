@@ -56,7 +56,7 @@ case $ANSWER in
     cp ~/dotfile/.zshrc ~/config/zsh/.zshrc
     cp ~/dotfile/.vimrc ~/config/vim/.zimrc
     echo 'create .zshrc symbolic link'
-    ln -s ~/.zshrc ~/config/zsh/.zshrc;;
+    ln -s ~/config/zsh/.zshrc ~/.zshrc;;
   * ) echo "setup dotfiles skip";;
 esac
 

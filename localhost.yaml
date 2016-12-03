@@ -51,7 +51,7 @@
       - { name: virtualbox }
 
   tasks:
-    - name: add homebrew tap binary repository
+    - name: add homebrew tap repository
       homebrew_tap: name={{ item }}
       with_items: "{{ homebrew_tap_repository }}"
     - name: update homebrew
