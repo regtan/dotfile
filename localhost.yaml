@@ -3,6 +3,10 @@
   gather_facts: no
   sudo: no
   vars:
+    homebrew_tap_repository:
+      - caskroom/cask
+      - homebrew/binary
+      - homebrew/dupes
     homebrew_packages:
       - { name: readline }
       - { name: openssl }
@@ -48,9 +52,8 @@
 
   tasks:
     - name: add homebrew tap binary repository
-      homebrew_tap: name=homebrew/binary
-    - name: add homebrew tap dupe repository
-      homebrew_tap: name=homebrew/dupes
+      homebrew_tap: name={{ item }}
+      with_items: "{{ homebrew_tap_repository }}"
     - name: update homebrew
       homebrew: update_homebrew=yes
 
@@ -64,31 +67,18 @@
           if item.install_options is not string
           else item.install_options
         }}
-      with_items: homebrew_packages
-      register: brew_result
-    - name: create homebrew package-info directory
-      file: path=~/config/homebrew state=directory
-    - name: store homebrew packge-info
-      shell: brew info {{ item }} > ~/config/homebrew/{{ item }}
-      with_items: brew_result.results | selectattr('changed') | map(attribute='item') | map(attribute='name') | list
+      with_items: "{{ homebrew_packages }}"
 
     # homebrew-cask
-    - name: add brew tap cask repository
-      homebrew_tap: name=caskroom/cask
     - name: install homebrew-cask
       homebrew: name=brew-cask state=latest
     - name: install homebrew-cask package
       homebrew_cask: name={{ item.name }} state={{ item.state|default('installed') }}
-      with_items: homebrew_cask_packages
-      register: brew_result
-    - name: create homebrew-cask package-info directory
-      file: path=~/config/homebrew-cask state=directory
-    - name: store homebrew-cask packge-info
-      shell: brew info {{ item }} > ~/config/homebrew-cask/{{ item }}
-      with_items: brew_result.results | selectattr('changed') | map(attribute='item') | map(attribute='name') | list
+      with_items: "{{ homebrew_cask_packages }}"
 
     # prezto
-    - git: repo=https://github.com/sorin-ionescu/prezto.git dest=~/.zprezto
+    - name: install prezto
+      git: repo=https://github.com/sorin-ionescu/prezto.git dest=~/.zprezto
 
   handlers:
     - name: run fc-cache
