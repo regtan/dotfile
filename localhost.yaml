@@ -71,7 +71,7 @@
 
     # homebrew-cask
     - name: install homebrew-cask
-      homebrew: name=caskroom/cask/brew-cask state=latest
+      homebrew: name=cask state=latest
     - name: install homebrew-cask package
       homebrew_cask: name={{ item.name }} state={{ item.state|default('installed') }}
       with_items: "{{ homebrew_cask_packages }}"
