@@ -91,7 +91,7 @@
 
     # prezto
     - name: install prezto
-      git: git@github.com:sorin-ionescu/prezto.git
+      git: https://github.com/sorin-ionescu/prezto.git
       args:
         creates: ~/.zprezto/
 

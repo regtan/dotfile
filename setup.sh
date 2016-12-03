@@ -13,10 +13,9 @@ esac
 
 echo 'clone dotfiles?[Y/n]'
 read ANSWER
-
 case $ANSWER in
   "" | "Y" | "y" )
-    git clone git@github.com:regtan/dotfile.git;;
+    git clone https://github.com/regtan/dotfile.git;;
   * ) echo "clone dotfile skip";;
 esac
 
