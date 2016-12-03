@@ -42,7 +42,7 @@ read ANSWER
 case $ANSWER in
   "" | "Y" | "y" )
     cd ~/dotfile
-    HOMEBREW_CASK_OPTS="--appdir=/Applications" ansible-playbook -i hosts -vv localhost.yml;;
+    HOMEBREW_CASK_OPTS="--appdir=/Applications" ansible-playbook -i hosts -vv localhost.yaml;;
   * ) echo "run ansible skip";;
 esac
 
