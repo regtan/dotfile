@@ -16,35 +16,39 @@ read ANSWER
 
 case $ANSWER in
   "" | "Y" | "y" )
-    git clone git@github.com:regtan/dotfile.git
+    git clone git@github.com:regtan/dotfile.git;;
   * ) echo "clone dotfile skip";;
 esac
 
 echo 'install homebrew?[Y/n]'
+read ANSWER
 case $ANSWER in
   "" | "Y" | "y" )
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";;
   * ) echo "install homebrew skip";;
 esac
 
 echo 'install ansible?[Y/n]'
+read ANSWER
 case $ANSWER in
   "" | "Y" | "y" )
     brew install python
     brew install ansible
-    rehash
+    rehash;;
   * ) echo "install homebrew skip";;
 esac
 
 echo 'run ansible?[Y/n]'
+read ANSWER
 case $ANSWER in
   "" | "Y" | "y" )
     cd ~/dotfile
-    HOMEBREW_CASK_OPTS="--appdir=/Applications" ansible-playbook -i hosts -vv localhost.yml
+    HOMEBREW_CASK_OPTS="--appdir=/Applications" ansible-playbook -i hosts -vv localhost.yml;;
   * ) echo "install homebrew skip";;
 esac
 
 echo 'setup dotfiles?[Y/n]'
+read ANSWER
 case $ANSWER in
   "" | "Y" | "y" )
     echo 'copy dotfiles ~/dotfile -> ~/config'
@@ -53,7 +57,7 @@ case $ANSWER in
     cp ~/dotfile/.zshrc ~/config/zsh/.zshrc
     cp ~/dotfile/.vimrc ~/config/vim/.zimrc
     echo 'create .zshrc symbolic link'
-    ln -s ~/config/zsh/.zshrc ~/.zshrc
+    ln -s ~/config/zsh/.zshrc ~/.zshrc;;
   * ) echo "install homebrew skip";;
 esac
 
