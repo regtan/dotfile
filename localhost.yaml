@@ -90,10 +90,7 @@
       with_items: brew_result.results | selectattr('changed') | map(attribute='item') | map(attribute='name') | list
 
     # prezto
-    - name: install prezto
-      git: https://github.com/sorin-ionescu/prezto.git
-      args:
-        creates: ~/.zprezto/
+    - git: repo=https://github.com/sorin-ionescu/prezto.git dest=~/.zprezto
 
   handlers:
     - name: run fc-cache
