@@ -3,10 +3,6 @@
   gather_facts: no
   sudo: no
   vars:
-    homebrew_taps:
-      - homebrew/binary
-      - homebrew/dupes
-      - caskroom/cask
     homebrew_packages:
       - { name: readline }
       - { name: openssl }
@@ -51,10 +47,10 @@
       - { name: virtualbox }
 
   tasks:
-    - name: add homebrew tap repository
-      homebrew_tap: name={{ item }} state=present
-      with_items: homebrew_taps
-
+    - name: add homebrew tap binary repository
+      homebrew_tap: name=homebrew/binary
+    - name: add homebrew tap dupe repository
+      homebrew_tap: name=homebrew/dupes
     - name: update homebrew
       homebrew: update_homebrew=yes
 
@@ -77,6 +73,8 @@
       with_items: brew_result.results | selectattr('changed') | map(attribute='item') | map(attribute='name') | list
 
     # homebrew-cask
+    - name: add brew tap cask repository
+      homebrew_tap: name=caskroom/cask
     - name: install homebrew-cask
       homebrew: name=brew-cask state=latest
     - name: install homebrew-cask package
